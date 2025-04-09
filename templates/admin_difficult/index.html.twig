@@ -1,0 +1,41 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block title %}Hello AdminDifficultController!{% endblock %}
+
+{% block section %}
+
+<section class="container">
+
+    <table>
+        
+        <tr>
+            <th>Difficult :</th>
+            <th scope="col">Voir</th>
+            <th scope="col">Remove</th>
+            <th scope="col">Edit</th>
+
+        </tr>
+        <a href="{{path('app_admin_difficult_add')}}">Add</a> 
+        {% for difficult in difficult %}
+                <tr>
+                    <td>
+                        {{difficult.name}}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_admin_difficult_show', {'id': difficult.id}) }}">Voir</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_admin_difficult_delete', {'id': difficult.id}) }}">Supprimer</a>
+                    </td>
+                    <td> 
+                        <a href="{{path('app_admin_difficult_edit',{id : difficult.id})}}">Edit</a>                                
+                    </td>
+
+                </tr>
+                
+            </tbody>
+        {% endfor %}
+    </table>
+</section> 
+
+{% endblock %}

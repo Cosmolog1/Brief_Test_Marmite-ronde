@@ -60,8 +60,6 @@ class Recipe
     #[ORM\OneToMany(targetEntity: Likes::class, mappedBy: 'recipe')]
     private Collection $likes;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Media $media = null;
 
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     private ?Difficult $difficult = null;
@@ -69,6 +67,9 @@ class Recipe
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
 
     public function __construct()
     {
@@ -271,17 +272,6 @@ class Recipe
         return $this;
     }
 
-    public function getMedia(): ?Media
-    {
-        return $this->media;
-    }
-
-    public function setMedia(?Media $media): static
-    {
-        $this->media = $media;
-
-        return $this;
-    }
 
     public function getDifficult(): ?Difficult
     {
@@ -311,5 +301,17 @@ class Recipe
     public function setCreatedAtValue(): void
     {
         $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
     }
 }

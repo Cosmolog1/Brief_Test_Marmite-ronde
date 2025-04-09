@@ -1,0 +1,21 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block title %}Hello AdminCategoryController!{% endblock %}
+
+{% block section %}
+
+<br>
+<p>Title : {{ recipe.title }}</p>
+<br>
+<p>Duration : {{ recipe.duration }}</p>
+<br>
+<p>NbPeople : {{ recipe.nbPeople }}</p>
+<br>
+<p>Content : {{ recipe.content }}</p>
+<br>
+<p>Content : {{ recipe.image }}</p>
+
+
+<button type="submit">Soumettre</button>
+
+{% endblock %}

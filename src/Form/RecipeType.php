@@ -2,43 +2,61 @@
 
 namespace App\Form;
 
-use App\Entity\Difficult;
-use App\Entity\Ingredient;
+use App\Entity\User;
 use App\Entity\Media;
 use App\Entity\Recipe;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Difficult;
+use App\Entity\Ingredient;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class RecipeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('duration')
-            ->add('nbPeople')
+            ->add('title', TextType::class, [
+                "label" => "Nom de la recette",
+                "required" => true,
+            ])
+            ->add('duration', NumberType::class, [
+                "label" => "Durée",
+                "required" => true,
+            ])
+            ->add('nbPeople', NumberType::class, [
+                "label" => "Nombre de personne",
+                "required" => true,
+            ])
             // ->add('createdAt', null, [
             //     'widget' => 'single_text',
             // ])
             // ->add('updateAt', null, [
             //     'widget' => 'single_text',
             // ])
-            ->add('content')
+            ->add('content', TextType::class, [
+                "label" => "Détail de la recette",
+                "required" => true,
+            ])
             ->add('ingredient', EntityType::class, [
                 'class' => Ingredient::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
                 'multiple' => true,
+                'required' => true,
             ])
-            ->add('media', EntityType::class, [
-                'class' => Media::class,
-                'choice_label' => 'id',
+
+            ->add('image', TextType::class, [
+                "label" => "Ajouter l'url de l'image",
+                "required" => true,
             ])
+
             ->add('difficult', EntityType::class, [
                 'class' => Difficult::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
+                'required' => true,
             ])
             ->add('author', EntityType::class, [
                 'class' => User::class,

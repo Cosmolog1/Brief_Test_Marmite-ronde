@@ -1,0 +1,41 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block title %}Hello AdminIngredientController!{% endblock %}
+
+{% block section %}
+
+<section class="container">
+
+    <table>
+        
+        <tr>
+            <th>Recipe :</th>
+            <th scope="col">Voir</th>
+            <th scope="col">Remove</th>
+            <th scope="col">Edit</th>
+
+        </tr>
+        <a href="{{path('app_admin_recipe_add')}}">Add</a> 
+        {% for recipe in recipe %}
+                <tr>
+                    <td>
+                        {{recipe.title}}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_admin_recipe_show', {'id': recipe.id}) }}">Voir</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_admin_recipe_delete', {'id': recipe.id}) }}">Supprimer</a>
+                    </td>
+                    <td> 
+                        <a href="{{path('app_admin_recipe_edit',{id : recipe.id})}}">Edit</a>                                
+                    </td>
+
+                </tr>
+                
+            </tbody>
+        {% endfor %}
+    </table>
+</section> 
+
+{% endblock  %}
