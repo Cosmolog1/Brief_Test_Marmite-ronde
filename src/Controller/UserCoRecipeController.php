@@ -11,29 +11,33 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-final class AdminRecipeController extends AbstractController
+final class UserCoRecipeController extends AbstractController
 {
-    #[Route('/admin/recipe', name: 'app_admin_recipe')]
+    #[Route('/userco/recipe', name: 'app_userco_recipe')]
     public function index(RecipeRepository $RecipeRepository): Response
     {
-        $recipes = $RecipeRepository->findAll();
+        // L'id de l'utilisateur qui est connecté
+        // $idUser = ????????
 
-        return $this->render('admin_recipe/index.html.twig', [
+        $idUser = $this->getUser()->getId();
+        $recipes = $RecipeRepository->findBy(['author' => $idUser]);
+
+        return $this->render('userco_recipe/index.html.twig', [
             'recipes' => $recipes,
         ]);
     }
 
-    #[Route('/admin/recipe/{id}', name: 'app_admin_recipe_show')]
+    #[Route('/userco/recipe/{id}', name: 'app_userco_recipe_show')]
     public function show($id, RecipeRepository $RecipeRepository): Response
     {
         $recipe = $RecipeRepository->find($id);
 
-        return $this->render('admin_recipe/show.html.twig', [
+        return $this->render('userco_recipe/show.html.twig', [
             'recipe' => $recipe
         ]);
     }
 
-    #[Route('/admin/delete_recipe/{id}', name: 'app_admin_recipe_delete')]
+    #[Route('/userco/delete_recipe/{id}', name: 'app_userco_recipe_delete')]
     public function delete($id, RecipeRepository $RecipeRepository, EntityManagerInterface $entityManager): Response
     {
         $recipe = $RecipeRepository->find($id);
@@ -41,10 +45,10 @@ final class AdminRecipeController extends AbstractController
         $entityManager->remove($recipe);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_admin_recipe');
+        return $this->redirectToRoute('app_userco_recipe');
     }
 
-    #[Route('/admin/edit_recipe/{id}', name: 'app_admin_recipe_edit')]
+    #[Route('/userco/edit_recipe/{id}', name: 'app_userco_recipe_edit')]
     public function edit(
         $id,
         RecipeRepository $RecipeRepository,
@@ -61,18 +65,20 @@ final class AdminRecipeController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->render("admin_recipe/edit.html.twig", parameters: [
+        return $this->render("userco_recipe/edit.html.twig", parameters: [
             "edit" => $edit,
             "form" => $form->createView()
         ]);
     }
 
-    #[Route('/admin/add_recipe', name: 'app_admin_recipe_add')]
+    #[Route('/userco/add_recipe', name: 'app_userco_recipe_add')]
     public function add_ing(
         EntityManagerInterface $entityManager,
         Request $request
     ): Response {
+        $mailUser = $this->getUser()->getEmail();
         $rec = new Recipe();
+        $rec->setAuthor($this->getUser());
         $form = $this->createForm(RecipeType::class, $rec);
         $form->handleRequest($request);
 
@@ -82,8 +88,9 @@ final class AdminRecipeController extends AbstractController
         }
 
 
-        return $this->render('admin_recipe/add.html.twig', [
-            'controller_name' => 'AdminRecipeController',
+
+        return $this->render('userco_recipe/add.html.twig', [
+            'controller_name' => 'UserCoRecipeController',
             'form' => $form->createView(),
 
         ]);

@@ -13,7 +13,7 @@
                 </li>
                 {% if app.user %}
                 <li  class="nav-item">
-                    <p>Bienvenue</p>{{app.user.email}}<a href="{{path('app_logout')}}">Se deconnecter</a>
+                    Bienvenue : {{app.user.email}} <a href="{{path('app_logout')}}">Se deconnecter</a>
                 </li>
                 {% else %}
                 <li  class="nav-item">
@@ -23,21 +23,28 @@
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Recipe
+                        Menu
                     </a>
-                    {# <ul class="dropdown-menu">
-                    {% set recipe = recipeHeader() %}
-                        {% for recipe in recipe %}
-                            <li>
-                            <a class="dropdown-item" href="{{path('recipe_single',{id :recipe.id })}}">{{recipe.title}}</a>
-                        </li>
-                        {% endfor %}
-
-                        
-                    </ul> #}
+                    {% if app.user %} 
+                        {% if is_granted("ROLE_ADMIN") %}
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <li><a class="dropdown-item" href="{{ path ('app_admin_ingredient') }}">Ingredient</a></li>
+                                    <li><a class="dropdown-item" href="{{ path ('app_admin_difficult') }}">Difficult</a></li>
+                                    <li><a class="dropdown-item" href="{{ path ('app_admin_recipe') }}">Recipe</a></li>
+                                </li>    
+                            </ul>
+                        {% endif %}
+                        {% if is_granted("ROLE_USERCO") %}
+                            <ul class="dropdown-menu">
+                                <li>
+                                 <li><a class="dropdown-item" href="{{ path ('app_userco_recipe') }}">Recipe</a></li>
+                                 </li>    
+                            </ul>
+                        {% endif %}
+                    {% endif %}
                 </li>
-
-                </ul>
+            </ul>
         </div>
     </div>
 </nav>

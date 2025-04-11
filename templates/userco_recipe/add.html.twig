@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Controller!{% endblock %}
+
+{% block body %}
+{{ form_start(form) }}
+
+{{ form_row(form.title) }}
+<br>
+{{ form_row(form.duration) }}
+<br>
+{{ form_row(form.nbPeople) }}
+<br>
+{{ form_row(form.content) }}
+<br>
+{{ form_row(form.image) }}
+
+
+
+<button type="submit">Soumettre</button>
+
+{{ form_end(form) }}
+{% endblock  %}

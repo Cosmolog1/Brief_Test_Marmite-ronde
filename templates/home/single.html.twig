@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}La Recette{% endblock %}
+
+{% block body %}
+    <h1>{{ recipe.title }}</h1>
+    <br><br>
+    <div class="row">
+        <div class="col-lg-4 col-md-6" style="margin-bottom:10px">
+            <div class="card">
+                <img src="{{ asset(recipe.image) }}">
+                    <div class="card-body">
+                        <p class="card-text">Durée : {{ recipe.duration }}min  
+                        <p class="card-text">Difficultée : {{ recipe.difficult.name }}</p>
+                        <p class="card-text">Auteur : {{ recipe.author.email }}</p>
+                        <p class="card-text">Nombre de personnes : {{ recipe.nbPeople }}</p>
+                        <p class="card-text">Details : {{ recipe.content }}</p>
+                        <p class="card-text">Date de création : {{ recipe.createdAt|date("d/m/Y")}}</p>                               
+                    </div>
+                    <div>
+                        {{ form_start(form) }}
+                        {{ form_row(form.content) }}
+                        <button type="submit">Soumettre</button>
+                        {{ form_end(form) }}
+                    </div>
+            </div>
+    </div>
+</div>
+
+{% endblock %}

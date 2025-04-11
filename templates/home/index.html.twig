@@ -8,14 +8,15 @@
 <div class="container-fluid">
 
 <div class="row">
-    {% for recipe in recipe %}
+    {% for recipe in recipes %}
     <div class="col-lg-4 col-md-6">
         <div class="card">
             <img src="{{ asset(recipe.image) }}" alt="{{ recipe.title }}">
             <div class="card-body">
-                <p class="card-text">Ingredient : {{  recipe.ingredient}}  (Difficult: {{  recipe.difficult}})</p>
-                <a href="{{ path('shop_category', {id:club.league.id}) }}" class="btn btn-primary" target="_blank">{{ club.league.label }}</a>
-                <a href="{{ path('shop_single', {id:club.id}) }}" class="btn btn-primary" target="_blank">Maillot : {{ club.label }}</a>
+                <p class="card-text">Durée : {{ recipe.duration }}min  
+                <p class="card-text">Difficultée : {{ recipe.difficult.name }}</p>
+                <p class="card-text">Auteur : {{ recipe.author.email }}</p>
+                <a href="{{ path('recipe_single', {id:recipe.id}) }}" class="btn btn-primary" target="_blank">Details</a>
             </div>
         </div>
     </div>

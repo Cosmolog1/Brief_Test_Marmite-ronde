@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
-use App\Entity\Media;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use App\Entity\Recipe;
 use App\Entity\Difficult;
 use App\Entity\Ingredient;
@@ -37,7 +37,7 @@ class RecipeType extends AbstractType
             // ->add('updateAt', null, [
             //     'widget' => 'single_text',
             // ])
-            ->add('content', TextType::class, [
+            ->add('content', TextareaType::class, [
                 "label" => "Détail de la recette",
                 "required" => true,
             ])
@@ -58,10 +58,10 @@ class RecipeType extends AbstractType
                 'choice_label' => 'name',
                 'required' => true,
             ])
-            ->add('author', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
+            // ->add('author', EntityType::class, [
+            //     'class' => User::class,
+            //     'choice_label' => 'email',
+            // ])
         ;
     }
 

@@ -1,8 +1,8 @@
-{% extends 'base.admin.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Hello AdminIngredientController!{% endblock %}
 
-{% block section %}
+{% block body %}
 
 <section class="container">
 
@@ -15,20 +15,20 @@
             <th scope="col">Edit</th>
 
         </tr>
-        <a href="{{path('app_admin_recipe_add')}}">Add</a> 
+        <a href="{{path('app_userco_recipe_add')}}">Add</a> 
         {% for recipe in recipes %}
                 <tr>
                     <td>
                         {{recipe.title}}
                     </td>
                     <td>
-                        <a href="{{ path('app_admin_recipe_show', {'id': recipe.id}) }}">Voir</a>
+                        <a href="{{ path('app_userco_recipe_show', {'id': recipe.id}) }}">Voir</a>
                     </td>
                     <td>
-                        <a href="{{ path('app_admin_recipe_delete', {'id': recipe.id}) }}">Supprimer</a>
+                        <a href="{{ path('app_userco_recipe_delete', {'id': recipe.id}) }}">Supprimer</a>
                     </td>
                     <td> 
-                        <a href="{{path('app_admin_recipe_edit',{id : recipe.id})}}">Edit</a>                                
+                        <a href="{{path('app_userco_recipe_edit',{id : recipe.id})}}">Edit</a>                                
                     </td>
 
                 </tr>
