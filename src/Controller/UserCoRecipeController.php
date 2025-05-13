@@ -9,7 +9,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 final class UserCoRecipeController extends AbstractController
 {
@@ -54,6 +57,8 @@ final class UserCoRecipeController extends AbstractController
         RecipeRepository $RecipeRepository,
         EntityManagerInterface $entityManager,
         Request $request,
+        SluggerInterface $slugger,
+        #[Autowire('%kernel.project_dir%/public/upload/image')] string $imagesDirectory
     ): Response {
 
         $edit = $RecipeRepository->find($id);
@@ -61,6 +66,26 @@ final class UserCoRecipeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+                // Move the file to the directory where images are stored
+                try {
+                    $imageFile->move($imagesDirectory, $newFilename);
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'imageFilename' property to store the PDF file name
+                // instead of its contents
+                $edit->setImage($newFilename);
+            }
+
             $entityManager->persist($edit);
             $entityManager->flush();
         }
@@ -74,7 +99,9 @@ final class UserCoRecipeController extends AbstractController
     #[Route('/userco/add_recipe', name: 'app_userco_recipe_add')]
     public function add_ing(
         EntityManagerInterface $entityManager,
-        Request $request
+        Request $request,
+        SluggerInterface $slugger,
+        #[Autowire('%kernel.project_dir%/public/upload/image')] string $imagesDirectory
     ): Response {
         $mailUser = $this->getUser()->getEmail();
         $rec = new Recipe();
@@ -83,6 +110,26 @@ final class UserCoRecipeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+                // Move the file to the directory where images are stored
+                try {
+                    $imageFile->move($imagesDirectory, $newFilename);
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'imageFilename' property to store the PDF file name
+                // instead of its contents
+                $rec->setImage($newFilename);
+            }
+
             $entityManager->persist($rec);
             $entityManager->flush();
         }

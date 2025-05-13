@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-lg-4 col-md-6" style="margin-bottom:10px">
             <div class="card">
-                <img src="{{ asset(recipe.image) }}">
+                <img src="{{ asset('./upload/image/' ~ recipe.image) }}">
                     <div class="card-body">
                         <p class="card-text">Durée : {{ recipe.duration }}min  
                         <p class="card-text">Difficultée : {{ recipe.difficult.name }}</p>

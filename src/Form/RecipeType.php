@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\User;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use App\Entity\Recipe;
 use App\Entity\Difficult;
 use App\Entity\Ingredient;
@@ -11,8 +10,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class RecipeType extends AbstractType
 {
@@ -46,11 +47,18 @@ class RecipeType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => true,
                 'required' => true,
+                'expanded' => true,
             ])
 
-            ->add('image', TextType::class, [
-                "label" => "Ajouter l'url de l'image",
-                "required" => true,
+            // ->add('image', TextType::class, [
+            //     "label" => "Ajouter l'url de l'image",
+            //     "required" => true,
+            // ])
+
+            ->add('image', FileType::class, [
+                'label' => "Fichier de l'image :",
+                'required' => false,
+                'mapped' => false,
             ])
 
             ->add('difficult', EntityType::class, [
